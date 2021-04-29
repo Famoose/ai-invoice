@@ -1,6 +1,6 @@
 const path = require('path');
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const isDev = require('electron-is-dev');
 // Conditionally include the dev tools installer to load React Dev Tools
 let installExtension, REACT_DEVELOPER_TOOLS;
@@ -19,25 +19,26 @@ if (require("electron-squirrel-startup")) {
 function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1200,
+        height: 800,
         webPreferences: {
-            nodeIntegration: true,
-        },
+            nodeIntegration: false,
+            preload: path.join(__dirname, 'preload.js')
+        }
     });
-
+    Menu.setApplicationMenu(null);
     // and load the index.html of the app.
     // win.loadFile("index.html");
     win.loadURL(
         isDev
             ? 'http://localhost:3000'
-            : `file://${path.join(__dirname, '../build/index.html')}`
+            : `file://${path.join(__dirname, './build/index.html')}`
     );
     // Open the DevTools.
     if (isDev) {
         win.webContents.openDevTools({ mode: 'detach' });
     }
-}
+};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -66,3 +67,13 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+const { ipcMain } = require('electron')
+const fs = require('fs');
+
+ipcMain.on('getFilesFromFolder', (event, filePath) => {
+    fs.readdir(filePath, (err, files) => {
+        console.log(files);
+        event.returnValue = files;
+    })
+})
