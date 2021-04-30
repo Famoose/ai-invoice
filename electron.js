@@ -5,6 +5,9 @@ const isDev = require('electron-is-dev');
 // Conditionally include the dev tools installer to load React Dev Tools
 let installExtension, REACT_DEVELOPER_TOOLS;
 
+// load backend module
+require('./backend/main');
+
 if (isDev) {
     const devTools = require("electron-devtools-installer");
     installExtension = devTools.default;
@@ -67,13 +70,3 @@ app.on('activate', () => {
         createWindow();
     }
 });
-
-const { ipcMain } = require('electron')
-const fs = require('fs');
-
-ipcMain.on('getFilesFromFolder', (event, filePath) => {
-    fs.readdir(filePath, (err, files) => {
-        console.log(files);
-        event.returnValue = files;
-    })
-})
