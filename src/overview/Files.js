@@ -1,7 +1,7 @@
 
 
-function Files() {
-    const files = window.electron.sendSync('getFilesFromFolder', 'C:\\Users\\lukas');
+function Files(props) {
+    const files = window.electron.sendSync('getFilesFromFolder', props.folder);
     return (
         <FileList files={files}/>
     );
