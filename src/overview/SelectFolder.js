@@ -1,0 +1,20 @@
+import React from "react";
+
+function SelectFolder(props) {
+
+    function selectFolder() {
+        const selectedFolder = window.electron.sendSync('select-dirs', null)
+        props.setFolder(selectedFolder);
+        window.electron.invoke('setStoreValue', {key: 'overview-folder', value: selectedFolder});
+    }
+
+    return (
+        <div>
+            <button className="border-2 border-gray-800 px-3 py-2 rounded-md" onClick={selectFolder}>Verzeichnis
+                wählen
+            </button>
+            <code className="item-end pl-2">{props.folder}</code>
+        </div>);
+}
+
+export default SelectFolder;
