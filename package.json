@@ -1,7 +1,7 @@
 {
   "name": "ai-invoice",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "author": "Lukas Nydegger",
   "description": "ai-invoicing",
   "license": "MIT",
@@ -32,6 +32,7 @@
     "eject": "react-scripts eject",
     "dev": "concurrently -k \" set BROWSER=none && npm start\" \"npm:electron\"",
     "electron": "wait-on tcp:3000 && electron-forge start",
+    "publish": "electron-forge publish",
     "package": "react-scripts build && electron-forge package",
     "make": "react-scripts build && electron-forge make"
   },
