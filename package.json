@@ -4,6 +4,7 @@
   "private": true,
   "author": "Lukas Nydegger",
   "description": "ai-invoicing",
+  "license": "MIT",
   "main": "electron.js",
   "homepage": "https://github.com/Famoose/ai-invoice",
   "repository": "https://github.com/Famoose/ai-invoice",
