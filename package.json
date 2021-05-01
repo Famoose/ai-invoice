@@ -5,8 +5,8 @@
   "author": "Lukas Nydegger",
   "description": "ai-invoicing",
   "license": "MIT",
-  "main": "electron.js",
-  "homepage": "https://github.com/Famoose/ai-invoice",
+  "main": "public/electron.js",
+  "homepage": "./",
   "repository": "https://github.com/Famoose/ai-invoice",
   "dependencies": {
     "@craco/craco": "^6.1.2",
@@ -32,9 +32,9 @@
     "eject": "react-scripts eject",
     "dev": "concurrently -k \" set BROWSER=none && npm start\" \"npm:electron\"",
     "electron": "wait-on tcp:3000 && electron-forge start",
-    "publish": "electron-forge publish",
-    "package": "react-scripts build && electron-forge package",
-    "make": "react-scripts build && electron-forge make"
+    "publish": "craco build && electron-forge publish",
+    "package": "craco build && electron-forge package",
+    "make": "craco build && electron-forge make"
   },
   "eslintConfig": {
     "extends": [

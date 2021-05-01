@@ -9,7 +9,7 @@ let installExtension, REACT_DEVELOPER_TOOLS;
 require('update-electron-app')()
 
 // load backend module
-require('./backend/main');
+require('../backend/main');
 
 if (isDev) {
     const devTools = require("electron-devtools-installer");
@@ -32,13 +32,13 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.js')
         }
     });
-    Menu.setApplicationMenu(null);
+    //Menu.setApplicationMenu(null);
     // and load the index.html of the app.
     // win.loadFile("index.html");
     win.loadURL(
         isDev
             ? 'http://localhost:3000'
-            : `file://${path.join(__dirname, './build/index.html')}`
+            : `file://${path.join(__dirname, '../build/index.html')}`
     );
     // Open the DevTools.
     if (isDev) {
