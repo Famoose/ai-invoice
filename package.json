@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "public/electron.js",
   "homepage": "./",
-  "repository": "https://github.com/Famoose/ai-invoice",
+  "repository": "Famoose/ai-invoice",
   "dependencies": {
     "@craco/craco": "^6.1.2",
     "@headlessui/react": "^1.1.1",
