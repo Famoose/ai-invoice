@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 class Invoice {
     header: Header;
     footer: Footer;
