@@ -21,7 +21,7 @@ function App() {
                     <Overview/>
                 </Route>
                 <Route exact path="/template">
-                    <h1>template-1</h1>
+                    <h1>template-2</h1>
                 </Route>
             </Switch>
 
