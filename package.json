@@ -101,7 +101,7 @@
           "name": "@electron-forge/publisher-github",
           "config": {
             "repository": {
-              "owner": "lnydegger",
+              "owner": "Famoose",
               "name": "ai-invoice"
             },
             "prerelease": true
