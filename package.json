@@ -5,7 +5,8 @@
   "author": "Lukas Nydegger",
   "description": "ai-invoicing",
   "main": "electron.js",
-  "homepage": "./",
+  "homepage": "https://github.com/Famoose/ai-invoice",
+  "repository": "https://github.com/Famoose/ai-invoice",
   "dependencies": {
     "@craco/craco": "^6.1.2",
     "@headlessui/react": "^1.1.1",
