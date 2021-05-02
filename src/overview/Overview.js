@@ -1,19 +1,32 @@
 import Files from "./Files";
-import React, {useState} from "react";
+import React from "react";
 import SelectFolder from "./SelectFolder";
 
-function Overview(){
-    const [folder, setFolder] = useState(window.electron.sendSync('getStoreValue', 'overview-folder'));
+class Overview extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            folder: null
+        }
+    }
 
-    return (
-        <div className="container mx-3 mx-auto">
-            <h1 className="text-2xl font-thin mt-4">Übersicht</h1>
-            <div className="container mx-auto mt-3">
-                <div className="w-full flex justify-end">
-                    <SelectFolder folder={folder} setFolder={setFolder}/>
+    componentDidMount() {
+        window.electron.invoke('getStoreValue', 'overview-folder').then((folder) => {
+            this.setState({folder: folder});
+        });
+    }
+
+    render() {
+        return (
+            <div className="container mx-3 mx-auto">
+                <h1 className="text-2xl font-thin mt-4">Übersicht</h1>
+                <div className="container mx-auto mt-3">
+                    <div className="w-full flex justify-end">
+                        <SelectFolder folder={this.state.folder} setFolder={ (folder) => this.setState({folder: folder})}/>
+                    </div>
+                    {!!this.state.folder && <Files folder={this.state.folder}/>}
                 </div>
-                {!!folder && <Files folder={folder}/>}
-            </div>
-        </div>);
+            </div>)
+    };
 }
 export default Overview;

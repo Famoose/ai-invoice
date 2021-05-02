@@ -9,8 +9,7 @@ const store = new Store();
 
 ipcMain.on('getFilesFromFolder', (event, filePath) => {
     fs.readdir(filePath, (err, files) => {
-        console.log(files);
-        event.returnValue = files;
+        event.reply('onFilesFromFolder', files);
     });
 });
 
@@ -20,13 +19,12 @@ ipcMain.on('select-dirs', (event, arg) => {
     }).then(result => {
         console.log('directories selected', result.filePaths);
         event.returnValue = result.filePaths[0];
-
     });
 });
 
-ipcMain.on('getStoreValue', (event, key) => {
+ipcMain.handle('getStoreValue', (event, key) => {
     console.log(app.getPath('userData'))
-    event.returnValue = store.get(key);
+    return store.get(key);
 });
 
 ipcMain.handle('setStoreValue', (event, keyValuePair) => {
@@ -43,8 +41,11 @@ ipcMain.on('readFile', (event, path) => {
 });
 
 ipcMain.handle('saveFile', (event, invoice) => {
+    console.log('save');
     const folder = store.get('overview-folder');
+    const fileName =  invoice.offer.title + '-' + invoice.offer.offerNumber + '.json';
     if (folder) {
-        fs.writeFileSync(folder + '\\' + invoice.offer.title + '-' + invoice.offer.offerNumber + '.json', JSON.stringify(invoice), 'utf-8');
+        fs.writeFileSync(folder + '\\' + fileName, JSON.stringify(invoice), 'utf-8');
+        return fileName;
     }
 });

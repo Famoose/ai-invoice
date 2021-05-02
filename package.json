@@ -5,7 +5,7 @@
   "author": "Lukas Nydegger",
   "description": "ai-invoicing",
   "license": "MIT",
-  "main": "public/electron.js",
+  "main": "electron.js",
   "homepage": "./",
   "repository": "Famoose/ai-invoice",
   "dependencies": {
@@ -20,6 +20,7 @@
     "electron-store": "^8.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-paginate": "^7.1.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "update-electron-app": "^2.0.1",

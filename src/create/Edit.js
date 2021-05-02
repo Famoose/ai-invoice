@@ -7,7 +7,6 @@ class Edit extends React.Component {
         this.state = {
             invoice: Invoice.fromFile(this.props.match.params.path)
         };
-
     }
 
     render() {
@@ -16,6 +15,7 @@ class Edit extends React.Component {
             <div>
                 {JSON.stringify(this.state.invoice)}
             </div>
+            <button onClick={ () => console.log(window.electron.sendSync('getStoreValue', 'overview-folder'))}> set name</button>
         </div>);
     }
 }
