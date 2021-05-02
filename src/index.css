@@ -15,3 +15,39 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+form input {
+  @apply border border-gray-800 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent
+}
+
+form input:disabled {
+  @apply px-3 py-2 rounded-md border-0 ring-0
+}
+
+form textarea {
+  @apply border border-gray-800 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent
+}
+
+form h2{
+  @apply text-xl mt-4
+}
+
+.form-cluster{
+  @apply flex flex-col space-y-3
+}
+
+.form-group {
+  @apply flex items-center space-x-4 flex-1
+}
+
+.form-group input {
+  @apply flex-1
+}
+
+.form-group textarea {
+  @apply flex-1
+}
+
+.form-group label {
+  @apply w-40
+}

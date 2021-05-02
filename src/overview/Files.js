@@ -81,19 +81,7 @@ function FileList(props) {
     }
 
     return (
-        <div>
-            <div className="mx-60">
-                <ReactPaginate
-                    previousLabel={'<'}
-                    nextLabel={'>'}
-                    breakLabel={'...'}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={1}
-                    pageRangeDisplayed={1}
-                    onPageChange={handlePageClick}
-                    containerClassName="flex px-2 py-2 justify-around border-b border-gray-500 text-white"
-                    activeClassName="text-gray-900"
-                /></div>
+        <div className="">
             <Transition
                 appear={true}
                 show={true}
@@ -105,6 +93,18 @@ function FileList(props) {
                 leaveTo="opacity-0">
                 <ul className="space-y-2 pt-2">{listItems}</ul>
             </Transition>
+            <div className="container mx-auto absolute inset-x-0 bottom-0">
+                <ReactPaginate
+                    previousLabel={'<'}
+                    nextLabel={'>'}
+                    breakLabel={'...'}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={1}
+                    pageRangeDisplayed={1}
+                    onPageChange={handlePageClick}
+                    containerClassName="flex md:mx-40 xl:mx-80 px-2 py-2 bg-gray-500 justify-around rounded-t-lg text-white"
+                    activeClassName="text-gray-900"
+                /></div>
         </div>
 
     );

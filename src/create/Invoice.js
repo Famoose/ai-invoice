@@ -8,6 +8,10 @@ class Invoice {
     orderPositions: OrderPosition[];
     credits: Credit[];
 
+    constructor() {
+        this.orderPositions = [];
+    }
+
     static fromFile(path): Invoice {
         if (path.includes('.json')) {
             const data = window.electron.sendSync('readFile', path);
@@ -29,7 +33,7 @@ class Address {
     plz: string;
     place: string;
     phone: string;
-    comments: string[];
+    comments: string;
 }
 
 class Offer {
@@ -55,11 +59,11 @@ class Credit {
 class Header {
     logo: Blob;
     mwst: string;
-    address: string[];
+    address: string;
 }
 
 class Footer {
-    line: string[];
+    line: string;
 }
 
 export default Invoice;
