@@ -14,6 +14,8 @@ class Invoice {
     constructor() {
         this.orderPositions = [];
         this.credits = [];
+        this.header = {};
+        this.footer = {};
     }
 
     static fromFile(path): Invoice {
@@ -65,7 +67,7 @@ class Credit {
 }
 
 class Header {
-    logo: Blob;
+    logo: string;
     mwst: string;
     address: string;
 }

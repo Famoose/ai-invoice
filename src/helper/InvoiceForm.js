@@ -1,9 +1,12 @@
 import {ErrorMessage, Field, FieldArray, Form, Formik, useField} from "formik";
 import Invoice from "./Invoice";
 import {PlusCircleIcon} from "@heroicons/react/solid";
-import {XCircleIcon} from "@heroicons/react/outline";
+import {ChevronUpIcon, XCircleIcon} from "@heroicons/react/outline";
+import ImageSelecter, {ImageDisplayer} from "./ImageSelecter";
+import {Disclosure} from "@headlessui/react";
 
-function InvoiceForm (props){
+
+function InvoiceForm(props) {
     return (
         <Formik
             initialValues={props.invoice}
@@ -11,15 +14,36 @@ function InvoiceForm (props){
                 Invoice.saveToFile(values, props.oldFileName).then();
                 setSubmitting(false);
             }}>
-            {({values, isSubmitting}) => (
+            {({values, isSubmitting, setFieldValue}) => (
                 <Form className="space-y-4 mb-8">
-                    <button className="fixed py-3 z-30 px-2 bottom-6 right-6 bg-blue-500  text-white rounded-md shadow-md" type="submit" disabled={isSubmitting}>
+                    <button
+                        className="fixed py-3 z-30 px-2 bottom-6 right-6 bg-blue-500  text-white rounded-md shadow-md"
+                        type="submit" disabled={isSubmitting}>
                         Speichern
                     </button>
-                    <h2>Rechungsadresse</h2>
-                    <div>
 
-                    </div>
+                    <h2>Kopfzeile</h2>
+                    <Disclosure>
+                        {({ open }) => (
+                            <>
+                                <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-blue-900 bg-blue-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                                    <span>Bearbeiten</span>
+                                    <ChevronUpIcon
+                                        className={`${
+                                            open ? "transform rotate-180" : ""
+                                        } w-5 h-5 text-purple-500`}
+                                    />
+                                </Disclosure.Button>
+                                <Disclosure.Panel className="px-4 pt-4 pb-2">
+                                    <ImageSelecter setFile={(f) => setFieldValue('header.logo',f)}/>
+                                    {values.header.logo && <ImageDisplayer className="h-16" data={values.header.logo}/>}
+                                </Disclosure.Panel>
+                            </>
+                        )}
+                    </Disclosure>
+
+                    <h2>Rechungsadresse</h2>
+
                     <div className="grid grid-cols-2 gap-3">
                         <div className="form-cluster">
                             <div className="form-group">
@@ -132,13 +156,14 @@ function InvoiceForm (props){
                         )}
                     />
                     <h2>Rabatt und Zuschläge</h2>
-                    <div class="form-cluster">
+                    <div className="form-cluster">
                         <div className="form-group justify-between">
                             <label htmlFor="discount">Rabatt</label>
                             <div className="flex flex-row col-span-2">
                                 <Field className="border-r-0 rounded-r-none" type="text" name={`discount`}
                                        placeholder="Rabatt"/>
-                                <span className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">%</span>
+                                <span
+                                    className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">%</span>
                                 <ErrorMessage name={`discount`}/>
                             </div>
                             <ErrorMessage name="discount"/>
@@ -196,6 +221,7 @@ function InvoiceForm (props){
         </Formik>
     )
 }
+
 export default InvoiceForm;
 
 const TextArea = ({label, ...props}) => {
@@ -227,7 +253,8 @@ function OrderPositionField(props) {
             <div className="flex flex-row col-span-2">
                 <Field className="w-full border-r-0 rounded-r-none" type="number" name={`orderPositions.${index}.price`}
                        placeholder="Preis"/>
-                <span className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">CHF</span>
+                <span
+                    className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">CHF</span>
                 <ErrorMessage name={`orderPositions.${index}.price`}/>
             </div>
 
@@ -252,7 +279,8 @@ function CreditField(props) {
             <div className="flex flex-row col-span-2">
                 <Field className="w-full border-r-0 rounded-r-none" type="number" name={`credits.${index}.amount`}
                        placeholder="Menge"/>
-                <span className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">%</span>
+                <span
+                    className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">%</span>
                 <ErrorMessage name={`credits.${index}.amount`}/>
             </div>
             <button className="block transition duration-500 ease-in-out transform hover:scale-125 hover:text-red-600 "
