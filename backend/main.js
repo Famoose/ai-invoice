@@ -40,12 +40,22 @@ ipcMain.on('readFile', (event, path) => {
     }
 });
 
-ipcMain.handle('saveFile', (event, invoice) => {
-    console.log('save');
+ipcMain.handle('createFile', (event, invoice) => {
     const folder = store.get('overview-folder');
     const fileName =  invoice.offer.title + '-' + invoice.offer.offerNumber + '.json';
     if (folder) {
         fs.writeFileSync(folder + '\\' + fileName, JSON.stringify(invoice), 'utf-8');
+        return fileName;
+    }
+});
+
+ipcMain.handle('saveFile', (event, args) => {
+    const folder = store.get('overview-folder');
+    const fileName =  args.invoice.offer.title + '-' + args.invoice.offer.offerNumber + '.json';
+    if (folder) {
+        fs.unlink(folder + '\\' + args.oldFilename, () => {
+        });
+        fs.writeFileSync(folder + '\\' + fileName, JSON.stringify(args.invoice), 'utf-8');
         return fileName;
     }
 });

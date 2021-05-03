@@ -1,4 +1,4 @@
-import Invoice from "./Invoice";
+import Invoice from "../helper/Invoice";
 import React from "react";
 import {withRouter} from 'react-router-dom';
 import SelectFolder from "../overview/SelectFolder";
@@ -26,7 +26,7 @@ class New extends React.Component {
             title: 'Rechnung',
             description: 'Test'
         }
-        Invoice.saveToFile(invoice).then( (fileName) => {
+        Invoice.createFile(invoice).then( (fileName) => {
             this.props.history.push('/edit/' + fileName);
         });
     }

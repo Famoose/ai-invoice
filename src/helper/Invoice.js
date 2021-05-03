@@ -7,9 +7,13 @@ class Invoice {
     offer: Offer;
     orderPositions: OrderPosition[];
     credits: Credit[];
+    comment: string;
+    condition: string;
+    attachment: string;
 
     constructor() {
         this.orderPositions = [];
+        this.credits = [];
     }
 
     static fromFile(path): Invoice {
@@ -19,8 +23,12 @@ class Invoice {
         }
     }
 
-    static saveToFile(invoice: Invoice): Promise<string> {
-        return window.electron.invoke('saveFile', invoice);
+    static saveToFile(invoice: Invoice, oldFilename: string): Promise<string> {
+        return window.electron.invoke('saveFile', {invoice: invoice, oldFilename: oldFilename});
+    }
+
+    static createFile(invoice: Invoice): Promise<string> {
+        return window.electron.invoke('createFile', invoice);
     }
 }
 
