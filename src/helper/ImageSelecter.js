@@ -57,7 +57,7 @@ class ImageSelecter extends React.Component {
     }
 }
 
-export const ImageDisplayer = ({ data }) => <img className="h-40" src={`${data}`} />
+export const ImageDisplayer = ({ data }) => <img alt="logo" className="h-40" src={`${data}`} />
 
 
 export default ImageSelecter;

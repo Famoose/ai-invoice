@@ -1,5 +1,4 @@
 import {ErrorMessage, Field, FieldArray, Form, Formik, useField} from "formik";
-import Invoice from "./Invoice";
 import {PlusCircleIcon} from "@heroicons/react/solid";
 import {ChevronUpIcon, XCircleIcon} from "@heroicons/react/outline";
 import ImageSelecter, {ImageDisplayer} from "./ImageSelecter";
@@ -11,7 +10,7 @@ function InvoiceForm(props) {
         <Formik
             initialValues={props.invoice}
             onSubmit={(values, {setSubmitting}) => {
-                Invoice.saveToFile(values, props.oldFileName).then();
+                props.submitAction(values);
                 setSubmitting(false);
             }}>
             {({values, isSubmitting, setFieldValue}) => (
@@ -23,7 +22,7 @@ function InvoiceForm(props) {
                     </button>
 
                     <h2>Kopfzeile</h2>
-                    <Disclosure>
+                    <Disclosure >
                         {({ open }) => (
                             <>
                                 <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-sm font-medium text-left text-blue-900 bg-blue-100 rounded-lg hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
@@ -35,8 +34,25 @@ function InvoiceForm(props) {
                                     />
                                 </Disclosure.Button>
                                 <Disclosure.Panel className="px-4 pt-4 pb-2">
-                                    <ImageSelecter setFile={(f) => setFieldValue('header.logo',f)}/>
-                                    {values.header.logo && <ImageDisplayer className="h-16" data={values.header.logo}/>}
+                                    <div className="form-cluster">
+                                        <div className="form-group">
+                                            <label>Logo</label>
+                                            <ImageSelecter setFile={(f) => setFieldValue('header.logo',f)}/>
+                                            {values.header.logo && <ImageDisplayer data={values.header.logo}/>}
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="header.mswt">MWST Nr.</label>
+                                            <Field type="text" name="header.mswt" placeholder="MWST Nr."/>
+                                            <ErrorMessage name="header.mswt"/>
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="header.contact">Kontakt</label>
+                                            <TextArea className="h-24" name="header.contact"
+                                                      placeholder="Kontakt"/>
+                                            <ErrorMessage name="header.contact"/>
+                                        </div>
+                                    </div>
+
                                 </Disclosure.Panel>
                             </>
                         )}
@@ -52,24 +68,14 @@ function InvoiceForm(props) {
                                 <ErrorMessage name="offer.intro"/>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="offer.name1">Name 1</label>
-                                <Field type="text" name="offer.name1" placeholder="Name 1"/>
+                                <label htmlFor="offer.name1">Name</label>
+                                <Field type="text" name="offer.name1" placeholder="Name"/>
                                 <ErrorMessage name="offer.name1"/>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="offer.name2">Name 2</label>
-                                <Field type="text" name="offer.name2" placeholder="Name 2"/>
-                                <ErrorMessage name="offer.name2"/>
-                            </div>
-                            <div className="form-group">
                                 <label htmlFor="offer.address1">Adresse 1</label>
-                                <Field type="text" name="offer.address1" placeholder="Adresse 1"/>
+                                <Field type="text" name="offer.address1" placeholder="Adresse"/>
                                 <ErrorMessage name="offer.address1"/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="offer.address2">Adresse 2</label>
-                                <Field type="text" name="offer.address2" placeholder="Adresse 2"/>
-                                <ErrorMessage name="offer.address2"/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="offer.plz">PLZ</label>
@@ -77,20 +83,20 @@ function InvoiceForm(props) {
                                 <ErrorMessage name="offer.plz"/>
                             </div>
                             <div className="form-group">
-                                <label htmlFor="offer.address2">Ort</label>
-                                <Field type="text" name="offer.address2" placeholder="Ort"/>
-                                <ErrorMessage name="offer.address2"/>
+                                <label htmlFor="offer.place">Ort</label>
+                                <Field type="text" name="offer.place" placeholder="Ort"/>
+                                <ErrorMessage name="offer.place"/>
                             </div>
                         </div>
                         <div className="form-cluster">
                             <div className="form-group">
-                                <label htmlFor="offer.phone">phone</label>
-                                <Field type="text" name="offer.phone" placeholder="Titel"/>
+                                <label htmlFor="offer.phone">Telefon</label>
+                                <Field type="text" name="offer.phone" placeholder="Telefon"/>
                                 <ErrorMessage name="offer.phone"/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="offer.comments">Bemerkung</label>
-                                <TextArea className="h-72" name="offer.comments"
+                                <TextArea className="h-48" name="offer.comments"
                                           placeholder="Bemerkung"/>
                                 <ErrorMessage name="offer.comments"/>
                             </div>
@@ -235,7 +241,7 @@ const TextArea = ({label, ...props}) => {
 
 function OrderPositionField(props) {
     props.orderPositions.forEach(op => {
-        if (!!op.amount && !!op.price) {
+        if ((!!op.amount || op.amount === 0) && (!!op.price || op.price === 0)) {
             op.total = op.amount * op.price
         }
     })
@@ -294,7 +300,7 @@ function CreditField(props) {
 
 export function getTotal(values) {
     return values.orderPositions.reduce((p, c) => {
-        return !!c.total ? c.total + p : p;
+        return !!c.total || c.total === 0 ? c.total + p : p;
     }, 0).toFixed(2);
 }
 
@@ -305,7 +311,7 @@ export function getTotalWithDiscount(values) {
     }
 
     const credit = values.credits.reduce((p, c) => {
-        return !!c.amount ? c.amount + p : p;
+        return !!c.amount || c.amount === 0 ? c.amount + p : p;
     }, 0);
 
     total = total * (1 + (credit / 100));

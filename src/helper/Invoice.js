@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 class Invoice {
     header: Header;
-    footer: Footer;
     discount: number;
     address: Address;
     offer: Offer;
@@ -12,6 +11,7 @@ class Invoice {
     attachment: string;
 
     constructor() {
+        this.offer = {};
         this.orderPositions = [];
         this.credits = [];
         this.header = {};
@@ -25,8 +25,23 @@ class Invoice {
         }
     }
 
+    static fromTemplateFile(path): Invoice {
+        if (path.includes('.json')) {
+            const data = window.electron.sendSync('readTemplateFile', path);
+            return JSON.parse(data);
+        }
+    }
+
     static saveToFile(invoice: Invoice, oldFilename: string): Promise<string> {
         return window.electron.invoke('saveFile', {invoice: invoice, oldFilename: oldFilename});
+    }
+
+    static saveTemplateFile(invoice: Invoice, oldFilename: string, fileName: string): Promise<string> {
+        return window.electron.invoke('saveTemplateFile', {invoice: invoice, oldFilename: oldFilename, fileName: fileName});
+    }
+
+    static createTemplateFile(invoice: Invoice, fileName: string): Promise<string> {
+        return window.electron.invoke('createTemplateFile', {invoice:invoice, fileName: fileName});
     }
 
     static createFile(invoice: Invoice): Promise<string> {
@@ -37,9 +52,7 @@ class Invoice {
 class Address {
     intro: string;
     name1: string;
-    name2: string;
     address1: string;
-    address2: string;
     plz: string;
     place: string;
     phone: string;
@@ -69,11 +82,7 @@ class Credit {
 class Header {
     logo: string;
     mwst: string;
-    address: string;
-}
-
-class Footer {
-    line: string;
+    contact: string;
 }
 
 export default Invoice;

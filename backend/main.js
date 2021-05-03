@@ -3,6 +3,7 @@ const fs = require('fs');
 const {BrowserWindow} = require("electron");
 const Store = require('electron-store');
 const {app} = require('electron')
+const path = require('path');
 
 const store = new Store();
 
@@ -12,6 +13,14 @@ ipcMain.on('getFilesFromFolder', (event, filePath) => {
         event.reply('onFilesFromFolder', files);
     });
 });
+
+const templateFolder = app.getPath('userData') + '\\templates';
+ipcMain.on('getTemplates', (event, filePath) => {
+    fs.readdir(templateFolder, (err, files) => {
+        event.reply('onTemplates', files);
+    });
+});
+
 
 ipcMain.on('select-dirs', (event, arg) => {
     dialog.showOpenDialog(BrowserWindow.getFocusedWindow(), {
@@ -40,18 +49,44 @@ ipcMain.on('readFile', (event, path) => {
     }
 });
 
+ipcMain.on('readTemplateFile', (event, path) => {
+    const folder = templateFolder;
+    if (folder) {
+        fs.readFile(folder + '\\' + path, 'utf-8', (err, data) => {
+            event.returnValue = data;
+        });
+    }
+});
+
 ipcMain.handle('createFile', (event, invoice) => {
     const folder = store.get('overview-folder');
-    const fileName =  invoice.offer.title + '-' + invoice.offer.offerNumber + '.json';
+    const fileName = invoice.offer.title + '-' + invoice.offer.offerNumber + '.json';
     if (folder) {
         fs.writeFileSync(folder + '\\' + fileName, JSON.stringify(invoice), 'utf-8');
         return fileName;
     }
 });
 
+ipcMain.handle('createTemplateFile', (event, args) => {
+    const fileName = args.fileName + '.json';
+    ensureDirectoryExistence(templateFolder)
+    fs.writeFileSync(templateFolder + '\\' + fileName, JSON.stringify(args.invoice), 'utf-8');
+    return fileName;
+
+});
+
 ipcMain.handle('saveFile', (event, args) => {
     const folder = store.get('overview-folder');
-    const fileName =  args.invoice.offer.title + '-' + args.invoice.offer.offerNumber + '.json';
+    const fileName = args.invoice.offer.title + '-' + args.invoice.offer.offerNumber + '.json';
+    console.log(folder + '\\' + args.oldFilename);
+    if (fs.existsSync(folder + '\\' + fileName) && fileName !== args.oldFilename) {
+        dialog.showMessageBox({
+            type: 'error',
+            title: 'Fehler',
+            message: 'Es gibt bereits ein Dokument mit diesem Namen'
+        });
+        throw new Error('exists');
+    }
     if (folder) {
         fs.unlink(folder + '\\' + args.oldFilename, () => {
         });
@@ -59,3 +94,19 @@ ipcMain.handle('saveFile', (event, args) => {
         return fileName;
     }
 });
+
+ipcMain.handle('saveTemplateFile', (event, args) => {
+    const fileName = args.fileName + '.json';
+    if (templateFolder) {
+        fs.unlink(templateFolder + '\\' + args.oldFilename, () => {
+        });
+        fs.writeFileSync(templateFolder + '\\' + fileName, JSON.stringify(args.invoice), 'utf-8');
+        return fileName;
+    }
+});
+
+function ensureDirectoryExistence(filePath) {
+    if (!fs.existsSync(filePath)) {
+        fs.mkdirSync(filePath, {recursive: true});
+    }
+}

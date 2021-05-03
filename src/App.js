@@ -4,6 +4,8 @@ import React from "react";
 import Overview from "./overview/Overview";
 import Edit from "./create/Edit";
 import New from "./create/New";
+import TemplateOverview from "./template/TemplateOverview";
+import EditTemplate from "./template/EditTemplate";
 
 function App() {
     return (
@@ -20,9 +22,12 @@ function App() {
                 <Route exact path="/overview">
                     <Overview/>
                 </Route>
+
                 <Route exact path="/template">
-                    <h1>template-2</h1>
+                    <TemplateOverview/>
                 </Route>
+
+                <Route exact path="/template/edit/:path" component={EditTemplate} />
             </Switch>
 
         </Router>

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {SearchIcon} from "@heroicons/react/outline";
-import {useHistory} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import ReactPaginate from 'react-paginate';
 import {Transition} from "@headlessui/react";
 import {RefreshIcon} from "@heroicons/react/solid";
@@ -35,6 +35,10 @@ class Files extends React.Component {
         window.electron.removeAllListeners('onFilesFromFolder');
     }
 
+    handleOnClick = (file) => {
+        this.props.history.push('/edit/' + file);
+    }
+
     render() {
         return (
             <div>
@@ -43,30 +47,24 @@ class Files extends React.Component {
                        className="mb-2 px-3 py-2 rounded-md shadow-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
                        onChange={this.handleSearchChange} type="text"/>
                 {!this.state.files && <RefreshIcon className="animate-spin h-6 m-auto"/>}
-                {!!this.state.files && <FileList files={this.state.files}/>}
-
+                {!!this.state.files && <FileList files={this.state.files} handleOnClick={this.handleOnClick}/>}
             </div>
         )
     };
 }
 
-export default Files;
+export default withRouter(Files);
 
-function FileList(props) {
-    const history = useHistory();
+export function FileList(props) {
     let perPage = 10;
     const [offset, setOffset] = useState(0);
     const files = props.files;
     const pageCount = files.length / perPage;
 
-    function handleOnClick(file) {
-        history.push('/edit/' + file);
-    }
-
     const listItems = getSliceFiles().map((file) =>
-        <li key={file.toString()} onClick={() => handleOnClick(file)}
+        <li key={file.toString()} onClick={() => props.handleOnClick(file)}
             className="px-3 py-2 rounded-md shadow-sm hover:shadow-lg hover:bg-gray-200 cursor-pointer">
-            {file}
+            {file.slice(0,-5)}
         </li>
     );
 
