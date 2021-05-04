@@ -8,7 +8,6 @@ class Invoice {
     credits: Credit[];
     comment: string;
     condition: string;
-    attachment: string;
 
     constructor() {
         this.offer = {};
@@ -55,8 +54,6 @@ class Address {
     address1: string;
     plz: string;
     place: string;
-    phone: string;
-    comments: string;
 }
 
 class Offer {
@@ -65,6 +62,8 @@ class Offer {
     offerNumber: string;
     orderDate: Date;
     invoicingDate: Date;
+    comments: string;
+    phone: string;
 }
 
 class OrderPosition {
@@ -77,6 +76,7 @@ class OrderPosition {
 class Credit {
     description: string;
     amount: number;
+    percentage: number;
 }
 
 class Header {

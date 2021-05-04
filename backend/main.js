@@ -3,7 +3,6 @@ const fs = require('fs');
 const {BrowserWindow} = require("electron");
 const Store = require('electron-store');
 const {app} = require('electron')
-const path = require('path');
 
 const store = new Store();
 

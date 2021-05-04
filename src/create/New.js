@@ -76,7 +76,8 @@ class New extends React.Component {
                                       setFolder={(folder) => this.setState({folder: folder})}/>
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+
+                <div className="grid grid-cols-2 gap-4 mt-3">
                     {!!this.state.files && this.state.files.map( (file) => {
                         const name = file.slice(0,-5);
                         return <div onClick={ () => this.openModal(file)}
