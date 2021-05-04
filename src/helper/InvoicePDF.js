@@ -229,8 +229,8 @@ const Offer = (props) => (<>
 )
 
 const OrderPositionsTable = (props) => (<>
-        <View style={styles.orderPositions} fixed>
-            <View style={styles.opHeader}>
+        <View style={styles.orderPositions}>
+            <View style={styles.opHeader} fixed>
                 <View style={styles.opC1}>
                     <Text>Bezeichnung</Text>
                 </View>
