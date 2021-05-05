@@ -214,7 +214,6 @@ const Header = (props) => (<>
 )
 
 const showDate = (date) => {
-    console.log(date);
     return date && date.length !== 0;
 }
 

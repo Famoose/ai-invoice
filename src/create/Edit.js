@@ -3,7 +3,7 @@ import Invoice from "../helper/Invoice";
 
 import InvoiceForm from "../helper/InvoiceForm";
 import InvoicePDF from "../helper/InvoicePDF";
-import {PDFViewer, PDFDownloadLink} from '@react-pdf/renderer';
+import {PDFViewer} from '@react-pdf/renderer';
 import {PrinterIcon} from "@heroicons/react/solid";
 import {Dialog, Transition} from "@headlessui/react";
 

@@ -11,7 +11,6 @@ function InvoiceForm(props) {
             initialValues={props.invoice}
             onSubmit={(values, {setSubmitting}) => {
                 return props.submitAction(values).then(() => {
-                    console.log('saved');
                     setSubmitting(false);
                 });
             }}>
