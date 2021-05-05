@@ -3,6 +3,8 @@ import React, {Fragment} from "react";
 import SelectFolder from "../overview/SelectFolder";
 import {withRouter} from "react-router-dom";
 import {Dialog, Transition} from "@headlessui/react";
+import {RefreshIcon} from "@heroicons/react/solid";
+import {SearchIcon} from "@heroicons/react/outline";
 
 
 class New extends React.Component {
@@ -13,7 +15,9 @@ class New extends React.Component {
         this.state = {
             folder: null,
             files: null,
+            filesFiltered: null,
             open: false,
+            search: '',
             invoice: new Invoice(),
         };
     }
@@ -23,13 +27,13 @@ class New extends React.Component {
             this.setState({folder: folder});
         });
         window.electron.on('onTemplates', (files) => {
-            this.setState({files: files});
+            this.setState({files: files, filesFiltered: files});
         });
         window.electron.send('getTemplates', this.props.folder);
     }
 
     componentWillUnmount() {
-        window.electron.removeAllListeners('onFilesFromFolder');
+        window.electron.removeAllListeners('onTemplates');
     }
 
     closeModal = () => {
@@ -62,6 +66,13 @@ class New extends React.Component {
         }
     }
 
+    handleSearchChange = (event) => {
+        if(this.state.files){
+            this.setState({filesFiltered: this.state.files.filter( (f) => f.toLowerCase().includes(event.target.value.toLowerCase()))});
+        }
+        this.setState({search: event.target.value});
+    }
+
     validCreation = () => {
         return !!this.state.invoice.offer.title && !!this.state.invoice.offer.offerNumber;
     }
@@ -76,9 +87,15 @@ class New extends React.Component {
                                       setFolder={(folder) => this.setState({folder: folder})}/>
                     </div>
                 </div>
-
+                <div>
+                    <SearchIcon className="inline-block h-6 mr-2"/>
+                    <input placeholder="Suchen"
+                           className="mb-2 px-3 py-2 rounded-md shadow-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                           onChange={this.handleSearchChange} value={this.state.search} type="text"/>
+                </div>
+                {!this.state.filesFiltered && <RefreshIcon className="animate-spin h-6 m-auto"/>}
                 <div className="grid grid-cols-2 gap-4 mt-3">
-                    {!!this.state.files && this.state.files.map( (file) => {
+                    {!!this.state.filesFiltered && this.state.filesFiltered.map( (file) => {
                         const name = file.slice(0,-5);
                         return <div key={file} onClick={ () => this.openModal(file)}
                             className="text-gray-800 p-10 shadow-sm hover:shadow-lg rounded-md bg-gray-200 text-center text-2xl cursor-pointer font-semibold">{name}</div>

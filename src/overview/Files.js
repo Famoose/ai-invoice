@@ -15,7 +15,7 @@ class Files extends React.Component {
         };
         // read and filter only project files (json)
         if (this.state.search) {
-            this.files = this.files.filter(file => file.includes(this.search.search));
+            this.files = this.files.filter(file => file.toLowerCase().includes(this.search.search.toLowerCase()));
         }
     }
 
@@ -26,7 +26,7 @@ class Files extends React.Component {
         window.electron.send('getFilesFromFolder', this.props.folder);
     }
 
-    handleSearchChange(event) {
+    handleSearchChange = (event) => {
         this.setState({search: event.target.value});
     }
 

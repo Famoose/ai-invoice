@@ -211,7 +211,7 @@ const Address = (props) => (<>
 )
 
 const Header = (props) => (<>
-        <Image style={styles.logo} src={props.header.logo}/>
+        {props.header.logo && <Image style={styles.logo} src={props.header.logo}/>}
         <View>
             <Text style={styles.headerMwst}>{props.header.mwst}</Text>
             <Text>{props.header.contact}</Text>
@@ -239,7 +239,7 @@ const Offer = (props) => (<>
             <View style={styles.offerDescription}>
                 <Date title="Bestelldatum" date={props.offer.orderDate}/>
                 <Date title="Rechnungsdatum" date={props.offer.invoicingDate}/>
-                <Text>Telefon: {props.offer.phone}</Text>
+                {props.offer.phone && <Text>Telefon: {props.offer.phone}</Text>}
             </View>
         </View>
         <View style={styles.offerComment}>
@@ -371,7 +371,7 @@ const TotalWithDiscountAndCredit = (props) => (<>
         <View style={styles.opC3}>
         </View>
         <View style={styles.opC4}>
-            <Text>{numberWithCommas(Math.round(getTotalWithDiscountAndCredit(props.invoice)*2)/2)}</Text>
+            <Text>{numberWithCommas(Math.round(getTotalWithDiscountAndCredit(props.invoice) * 2) / 2)}</Text>
         </View>
     </View>
 </>)
@@ -379,7 +379,7 @@ const TotalWithDiscountAndCredit = (props) => (<>
 const Credits = (props) => (<View style={styles.orderPositions}>
         <Text style={styles.creditTitle}>Zuschläge/Gutschriften</Text>
         <View style={styles.opContent}>
-            {props.credits.map((c,index) => <Credit key={index} credit={c}/>)}
+            {props.credits.map((c, index) => <Credit key={index} credit={c}/>)}
         </View>
     </View>
 )

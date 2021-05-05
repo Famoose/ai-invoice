@@ -13,7 +13,7 @@ ipcMain.on('getFilesFromFolder', (event, filePath) => {
     });
 });
 
-const templateFolder = app.getPath('userData') + '\\templates';
+const templateFolder = app.getPath('userData') + '/templates';
 ipcMain.on('getTemplates', (event, filePath) => {
     fs.readdir(templateFolder, (err, files) => {
         event.reply('onTemplates', files);
@@ -42,7 +42,7 @@ ipcMain.handle('setStoreValue', (event, keyValuePair) => {
 ipcMain.on('readFile', (event, path) => {
     const folder = store.get('overview-folder');
     if (folder) {
-        fs.readFile(folder + '\\' + path, 'utf-8', (err, data) => {
+        fs.readFile(folder + '/' + path, 'utf-8', (err, data) => {
             event.returnValue = data;
         });
     }
@@ -51,7 +51,7 @@ ipcMain.on('readFile', (event, path) => {
 ipcMain.on('readTemplateFile', (event, path) => {
     const folder = templateFolder;
     if (folder) {
-        fs.readFile(folder + '\\' + path, 'utf-8', (err, data) => {
+        fs.readFile(folder + '/' + path, 'utf-8', (err, data) => {
             event.returnValue = data;
         });
     }
@@ -61,7 +61,7 @@ ipcMain.handle('createFile', (event, invoice) => {
     const folder = store.get('overview-folder');
     const fileName = invoice.offer.title + '-' + invoice.offer.offerNumber + '.json';
     if (folder) {
-        fs.writeFileSync(folder + '\\' + fileName, JSON.stringify(invoice), 'utf-8');
+        fs.writeFileSync(folder + '/' + fileName, JSON.stringify(invoice), 'utf-8');
         return fileName;
     }
 });
@@ -69,16 +69,15 @@ ipcMain.handle('createFile', (event, invoice) => {
 ipcMain.handle('createTemplateFile', (event, args) => {
     const fileName = args.fileName + '.json';
     ensureDirectoryExistence(templateFolder)
-    fs.writeFileSync(templateFolder + '\\' + fileName, JSON.stringify(args.invoice), 'utf-8');
+    fs.writeFileSync(templateFolder + '/' + fileName, JSON.stringify(args.invoice), 'utf-8');
     return fileName;
-
 });
 
 ipcMain.handle('saveFile', (event, args) => {
     const folder = store.get('overview-folder');
     const fileName = args.invoice.offer.title + '-' + args.invoice.offer.offerNumber + '.json';
-    console.log(folder + '\\' + args.oldFilename);
-    if (fs.existsSync(folder + '\\' + fileName) && fileName !== args.oldFilename) {
+    console.log(folder + '/' + args.oldFilename);
+    if (fs.existsSync(folder + '/' + fileName) && fileName !== args.oldFilename) {
         dialog.showMessageBox({
             type: 'error',
             title: 'Fehler',
@@ -87,9 +86,10 @@ ipcMain.handle('saveFile', (event, args) => {
         throw new Error('exists');
     }
     if (folder) {
-        fs.unlink(folder + '\\' + args.oldFilename, () => {
-        });
-        fs.writeFileSync(folder + '\\' + fileName, JSON.stringify(args.invoice), 'utf-8');
+        if (fileName !== args.oldFilename && fs.existsSync(folder + '/' + args.oldFilename)) {
+            fs.unlinkSync(folder + '/' + args.oldFilename);
+        }
+        fs.writeFileSync(folder + '/' + fileName, JSON.stringify(args.invoice), 'utf-8');
         return fileName;
     }
 });
@@ -97,10 +97,17 @@ ipcMain.handle('saveFile', (event, args) => {
 ipcMain.handle('saveTemplateFile', (event, args) => {
     const fileName = args.fileName + '.json';
     if (templateFolder) {
-        fs.unlink(templateFolder + '\\' + args.oldFilename, () => {
-        });
-        fs.writeFileSync(templateFolder + '\\' + fileName, JSON.stringify(args.invoice), 'utf-8');
+        if (args.fileName !== args.oldFilename && fs.existsSync(templateFolder + '/' + args.oldFilename)) {
+            fs.unlinkSync(templateFolder + '/' + args.oldFilename);
+        }
+        fs.writeFileSync(templateFolder + '/' + fileName, JSON.stringify(args.invoice), 'utf-8');
         return fileName;
+    }
+});
+
+ipcMain.handle('deleteTemplate', (event, fileName) => {
+    if (templateFolder && fs.existsSync(templateFolder + '/' + fileName)) {
+        fs.unlinkSync(templateFolder + '/' + fileName);
     }
 });
 
