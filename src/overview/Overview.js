@@ -16,17 +16,22 @@ class Overview extends React.Component {
         });
     }
 
+    setFolder = (folder) => {
+        this.setState({folder: folder});
+    }
+
     render() {
         return (
             <div className="container mx-3 mx-auto">
                 <h1 className="text-2xl font-thin mt-4">Übersicht</h1>
                 <div className="container mx-auto mt-3">
                     <div className="w-full flex justify-end">
-                        <SelectFolder folder={this.state.folder} setFolder={ (folder) => this.setState({folder: folder})}/>
+                        <SelectFolder folder={this.state.folder} setFolder={this.setFolder}/>
                     </div>
                     {!!this.state.folder && <Files folder={this.state.folder}/>}
                 </div>
             </div>)
     };
 }
+
 export default Overview;

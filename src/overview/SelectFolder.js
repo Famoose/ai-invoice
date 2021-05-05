@@ -4,8 +4,11 @@ function SelectFolder(props) {
 
     function selectFolder() {
         const selectedFolder = window.electron.sendSync('select-dirs', null)
-        props.setFolder(selectedFolder);
-        window.electron.invoke('setStoreValue', {key: 'overview-folder', value: selectedFolder});
+        window.electron.invoke('setStoreValue', {key: 'overview-folder', value: selectedFolder}).then( () => {
+          if(props.setFolder){
+              props.setFolder(selectedFolder);
+          }
+        });
     }
 
     return (

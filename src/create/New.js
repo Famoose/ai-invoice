@@ -27,7 +27,11 @@ class New extends React.Component {
             this.setState({folder: folder});
         });
         window.electron.on('onTemplates', (files) => {
+            if(!files){
+                files = []
+            }
             this.setState({files: files, filesFiltered: files});
+
         });
         window.electron.send('getTemplates', this.props.folder);
     }

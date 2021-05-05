@@ -25,6 +25,9 @@ class Files extends React.Component {
         });
         window.electron.send('getFilesFromFolder', this.props.folder);
     }
+    componentDidUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any) {
+        window.electron.send('getFilesFromFolder', this.props.folder);
+    }
 
     handleSearchChange = (event) => {
         this.setState({search: event.target.value});
@@ -49,7 +52,8 @@ class Files extends React.Component {
                 {!!this.state.files && <FileList files={this.state.files} handleOnClick={this.handleOnClick}/>}
             </div>
         )
-    };
+    }
+    ;
 }
 
 export default withRouter(Files);
@@ -63,7 +67,7 @@ export function FileList(props) {
     const listItems = getSliceFiles().map((file) =>
         <li key={file.toString()} onClick={() => props.handleOnClick(file)}
             className="px-3 py-2 rounded-md shadow-sm hover:shadow-lg hover:bg-gray-200 cursor-pointer">
-            {file.slice(0,-5)}
+            {file.slice(0, -5)}
         </li>
     );
 
