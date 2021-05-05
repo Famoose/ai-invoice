@@ -26,7 +26,7 @@ function createWindow() {
     // Create the browser window.
     const win = new BrowserWindow({
         width: 1200,
-        height: 800,
+        height: 900,
         webPreferences: {
             nodeIntegration: false,
             preload: path.join(__dirname, '/backend/preload.js')
