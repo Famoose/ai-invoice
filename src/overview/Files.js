@@ -21,7 +21,6 @@ class Files extends React.Component {
 
     componentDidMount() {
         window.electron.on('onFilesFromFolder', (files) => {
-            console.log(files);
             this.setState({files: files.filter(file => file.includes('.json'))});
         });
         window.electron.send('getFilesFromFolder', this.props.folder);

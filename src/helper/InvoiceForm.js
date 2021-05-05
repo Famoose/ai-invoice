@@ -149,7 +149,7 @@ function InvoiceForm(props) {
                                             <label className="col-span-2">Preis</label>
                                             <label>Total</label>
                                             <label></label>
-                                            <OrderPositionField orderPositions={values.orderPositions}
+                                            <OrderPositionFields orderPositions={values.orderPositions}
                                                                 arrayHelpers={arrayHelpers}/>
                                         </div>
                                         <div className="flex justify-between">
@@ -191,7 +191,7 @@ function InvoiceForm(props) {
                                             <label className="col-span-2">Prozent</label>
                                             <label className="col-span-2">Menge</label>
                                             <label></label>
-                                            <CreditField values={values}
+                                            <CreditFields values={values}
                                                          arrayHelpers={arrayHelpers}/>
                                         </div>
                                         <div className="flex justify-between">
@@ -240,7 +240,7 @@ const TextArea = ({label, ...props}) => {
     );
 };
 
-function OrderPositionField(props) {
+function OrderPositionFields(props) {
     props.orderPositions.forEach(op => {
         if ((!!op.amount || op.amount === 0) && (!!op.price || op.price === 0)) {
             op.total = op.amount * op.price
@@ -248,36 +248,40 @@ function OrderPositionField(props) {
     })
     props.orderPositions.total = props.orderPositions.amount * props.orderPositions.price
     return props.orderPositions.map((orderPosition, index) => (
-        <>
-            <Field className="col-span-7" type="text" name={`orderPositions.${index}.description`}
-                   placeholder="Bezeichnung"/>
-            <ErrorMessage name={`orderPositions.${index}.description`}/>
-
-            <Field type="number" name={`orderPositions.${index}.amount`}
-                   placeholder="Menge"/>
-            <ErrorMessage name={`orderPositions.${index}.amount`}/>
-
-            <div className="flex flex-row col-span-2">
-                <Field className="w-full border-r-0 rounded-r-none" type="number" name={`orderPositions.${index}.price`}
-                       placeholder="Preis"/>
-                <span
-                    className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">CHF</span>
-                <ErrorMessage name={`orderPositions.${index}.price`}/>
-            </div>
-
-            <Field type="text" name={`orderPositions.${index}.total`}
-                   placeholder="Total" disabled/>
-            <ErrorMessage name={`orderPositions.${index}.total`}/>
-
-            <button className="transition duration-500 ease-in-out transform hover:scale-125 hover:text-red-600 "
-                    onClick={() => props.arrayHelpers.remove(index)}>
-                <XCircleIcon className="h-6 w-6 mx-auto"/>
-            </button>
-        </>
+        <OrderPositionField key={index} index={index} arrayHelpers={props.arrayHelpers}/>
     ));
 }
 
-function CreditField(props) {
+function OrderPositionField(props) {
+    return (<>
+        <Field className="col-span-7" type="text" name={`orderPositions.${props.index}.description`}
+               placeholder="Bezeichnung"/>
+        <ErrorMessage name={`orderPositions.${props.index}.description`}/>
+
+        <Field type="number" name={`orderPositions.${props.index}.amount`}
+               placeholder="Menge"/>
+        <ErrorMessage name={`orderPositions.${props.index}.amount`}/>
+
+        <div className="flex flex-row col-span-2">
+            <Field className="w-full border-r-0 rounded-r-none" type="number" name={`orderPositions.${props.index}.price`}
+                   placeholder="Preis"/>
+            <span
+                className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">CHF</span>
+            <ErrorMessage name={`orderPositions.${props.index}.price`}/>
+        </div>
+
+        <Field type="text" name={`orderPositions.${props.index}.total`}
+               placeholder="Total" disabled/>
+        <ErrorMessage name={`orderPositions.${props.index}.total`}/>
+
+        <button className="transition duration-500 ease-in-out transform hover:scale-125 hover:text-red-600 "
+                onClick={() => props.arrayHelpers.remove(props.index)}>
+            <XCircleIcon className="h-6 w-6 mx-auto"/>
+        </button>
+    </>)
+}
+
+function CreditFields(props) {
     const total = getTotalWithDiscount(props.values);
     props.values.credits.forEach(c => {
         if ((!!c.percentage || c.percentage === 0)) {
@@ -285,31 +289,34 @@ function CreditField(props) {
         }
     })
     return props.values.credits.map((credit, index) => (
-        <>
-            <Field className="col-span-7" type="text" name={`credits.${index}.description`}
-                   placeholder="Bezeichnung"/>
-            <ErrorMessage name={`credits.${index}.description`}/>
-            <div className="flex flex-row col-span-2">
-                <Field className="w-full border-r-0 rounded-r-none" type="number" name={`credits.${index}.percentage`}
-                       placeholder="Prozent"/>
-                <span
-                    className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">%</span>
-                <ErrorMessage name={`credits.${index}.percentage`}/>
-            </div>
-            <div className="flex flex-row col-span-2">
-                <Field className="w-full border-r-0 rounded-r-none" type="number" name={`credits.${index}.amount`}
-                       placeholder="Menge"/>
-                <span
-                    className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">CHF</span>
-                <ErrorMessage name={`credits.${index}.amount`}/>
-            </div>
-            <button className="block transition duration-500 ease-in-out transform hover:scale-125 hover:text-red-600 "
-                    onClick={() => props.arrayHelpers.remove(index)}>
-                <XCircleIcon className="h-6 w-6 mx-auto"/>
-            </button>
-
-        </>
+        <CreditField key={index} index={index} arrayHelpers={props.arrayHelpers}/>
     ));
+}
+
+function CreditField(props){
+    return (<>
+        <Field className="col-span-7" type="text" name={`credits.${props.index}.description`}
+               placeholder="Bezeichnung"/>
+        <ErrorMessage name={`credits.${props.index}.description`}/>
+        <div className="flex flex-row col-span-2">
+            <Field className="w-full border-r-0 rounded-r-none" type="number" name={`credits.${props.index}.percentage`}
+                   placeholder="Prozent"/>
+            <span
+                className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">%</span>
+            <ErrorMessage name={`credits.${props.index}.percentage`}/>
+        </div>
+        <div className="flex flex-row col-span-2">
+            <Field className="w-full border-r-0 rounded-r-none" type="number" name={`credits.${props.index}.amount`}
+                   placeholder="Menge"/>
+            <span
+                className="flex items-center bg-white border border-gray-800 border-l-0 rounded-md rounded-l-none px-2">CHF</span>
+            <ErrorMessage name={`credits.${props.index}.amount`}/>
+        </div>
+        <button className="block transition duration-500 ease-in-out transform hover:scale-125 hover:text-red-600 "
+                onClick={() => props.arrayHelpers.remove(props.index)}>
+            <XCircleIcon className="h-6 w-6 mx-auto"/>
+        </button>
+    </>);
 }
 
 export function getTotal(values) {

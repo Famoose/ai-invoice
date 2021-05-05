@@ -8,9 +8,6 @@ let installExtension, REACT_DEVELOPER_TOOLS;
 //auto updater
 require('update-electron-app')()
 
-// load backend module
-require('./backend/main');
-
 if (isDev) {
     const devTools = require("electron-devtools-installer");
     installExtension = devTools.default;
@@ -44,14 +41,15 @@ function createWindow() {
     if (isDev) {
         win.webContents.openDevTools({ mode: 'detach' });
     }
-};
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+    // load backend module
+    require('./backend/main');
     createWindow();
-
     if (isDev) {
         installExtension(REACT_DEVELOPER_TOOLS)
             .then(name => console.log(`Added Extension:  ${name}`))

@@ -80,7 +80,7 @@ class New extends React.Component {
                 <div className="grid grid-cols-2 gap-4 mt-3">
                     {!!this.state.files && this.state.files.map( (file) => {
                         const name = file.slice(0,-5);
-                        return <div onClick={ () => this.openModal(file)}
+                        return <div key={file} onClick={ () => this.openModal(file)}
                             className="text-gray-800 p-10 shadow-sm hover:shadow-lg rounded-md bg-gray-200 text-center text-2xl cursor-pointer font-semibold">{name}</div>
                     })}
                 </div>

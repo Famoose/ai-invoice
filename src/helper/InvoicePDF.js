@@ -6,11 +6,11 @@ import {getTotal, getTotalWithDiscount, getTotalWithDiscountAndCredit} from "./I
 
 Font.register({
     family: 'Roboto', fonts: [
-        {src: '/Roboto/Roboto-Regular.ttf'},
-        {src: '/Roboto/Roboto-Bold.ttf', fontWeight: 'bold'},
-        {src: '/Roboto/Roboto-Medium.ttf', fontWeight: 'medium'},
-        {src: '/Roboto/Roboto-Thin.ttf', fontWeight: 'thin'},
-        {src: '/Roboto/Roboto-Light.ttf', fontWeight: 'light'},
+        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Regular.ttf'},
+        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Bold.ttf', fontWeight: 'bold'},
+        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Medium.ttf', fontWeight: 'medium'},
+        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Thin.ttf', fontWeight: 'thin'},
+        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Light.ttf', fontWeight: 'light'},
     ]
 });
 
@@ -261,7 +261,7 @@ const OrderPositionsTable = (props) => (<>
                 </View>
             </View>
             <View style={styles.opContent}>
-                {props.ops.map(op => <OrderPosition op={op}/>)}
+                {props.ops.map((op, index) => <OrderPosition key={index} op={op}/>)}
             </View>
             <View style={styles.opFooter}>
                 {/*/maybe uebertrag/*/}
@@ -373,7 +373,7 @@ const TotalWithDiscountAndCredit = (props) => (<>
 const Credits = (props) => (<View style={styles.orderPositions}>
         <Text style={styles.creditTitle}>Zuschläge/Gutschriften</Text>
         <View style={styles.opContent}>
-            {props.credits.map(c => <Credit credit={c}/>)}
+            {props.credits.map((c,index) => <Credit key={index} credit={c}/>)}
         </View>
     </View>
 )
