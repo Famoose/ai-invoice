@@ -4,13 +4,19 @@ import {Font} from '@react-pdf/renderer'
 import moment from "moment";
 import {getTotal, getTotalWithDiscount, getTotalWithDiscountAndCredit} from "./InvoiceForm";
 
+import robotoRegular from "@fontsource/roboto/files/roboto-all-500-normal.woff";
+import robotoBold from "@fontsource/roboto/files/roboto-all-900-normal.woff";
+import robotoMedium from "@fontsource/roboto/files/roboto-all-700-normal.woff";
+import robotoLight from "@fontsource/roboto/files/roboto-all-300-normal.woff";
+import robotoThin from "@fontsource/roboto/files/roboto-all-100-normal.woff";
+
 Font.register({
     family: 'Roboto', fonts: [
-        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Regular.ttf'},
-        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Bold.ttf', fontWeight: 'bold'},
-        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Medium.ttf', fontWeight: 'medium'},
-        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Thin.ttf', fontWeight: 'thin'},
-        {src: process.env.PUBLIC_URL + '/Roboto/Roboto-Light.ttf', fontWeight: 'light'},
+        {src: robotoRegular},
+        {src: robotoBold, fontWeight: 'bold'},
+        {src: robotoMedium, fontWeight: 'medium'},
+        {src: robotoThin, fontWeight: 'thin'},
+        {src: robotoLight, fontWeight: 'light'},
     ]
 });
 
