@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         fontSize: 12,
-        maxHeight: 80
+        maxHeight: 60
     },
 
     logo: {
-        height: 80
+        height: 60
     },
 
     headerMwst: {
@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
     },
 
     orderPositions: {
-        marginTop: 20,
         marginLeft: 40,
         marginRight: 40,
         fontSize: 12,
@@ -104,6 +103,17 @@ const styles = StyleSheet.create({
         borderLeft: '0',
         borderRight: '0',
         padding: 5,
+        marginTop: 20,
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+
+    discount: {
+        border: '1 dashed grey',
+        borderLeft: '0',
+        borderRight: '0',
+        padding: 5,
+        marginTop: 3,
         alignItems: 'center',
         flexDirection: 'row',
     },
@@ -142,10 +152,10 @@ const styles = StyleSheet.create({
 
     creditTitle: {
         fontSize: 13,
+        fontWeight: 'thin'
     },
 
     totalLine: {
-        borderTop: 1,
         marginLeft: 40,
         marginRight: 40,
         marginBottom: 3,
@@ -155,6 +165,7 @@ const styles = StyleSheet.create({
     },
 
     totalWithDiscountLine: {
+        marginTop: 3,
         marginLeft: 40,
         marginRight: 40,
         marginBottom: 3,
@@ -170,6 +181,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'baseline',
         fontSize: 13,
+        borderBottom: 2
     },
 
     orderComment: {
@@ -177,6 +189,11 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         marginRight: 40,
         fontSize: 12,
+    },
+
+    orderCommentElement: {
+        marginTop: 10,
+        marginBottom: 10,
     }
 });
 
@@ -238,7 +255,7 @@ const OrderPositionsTable = (props) => (<>
                     <Text>Menge</Text>
                 </View>
                 <View style={styles.opC3}>
-                    <Text>VP</Text>
+                    <Text>Preis</Text>
                 </View>
                 <View style={styles.opC4}>
                     <Text>Total</Text>
@@ -280,14 +297,21 @@ const OrderPosition = (props) => (<View style={styles.opLine}>
 
 const OrderComment = (props) => (<>
         <View style={styles.orderComment}>
-
+            {props.invoice.condition && <Text style={styles.orderCommentElement}>
+                Konditionen: {props.invoice.condition}
+            </Text>}
+            {props.invoice.comment && (<>
+                <Text style={styles.creditTitle}>Bemerkung</Text>
+                <Text style={styles.orderCommentElement}>
+                    {props.invoice.comment}
+                </Text></>)}
         </View>
     </>
 )
 
 const Discount = (props) => (<>
     <View style={styles.orderPositions}>
-        <View style={styles.opHeader}>
+        <View style={styles.discount}>
             <View style={styles.opC1}>
                 <Text>Rabatt</Text>
             </View>
@@ -342,7 +366,7 @@ const TotalWithDiscountAndCredit = (props) => (<>
         <View style={styles.opC3}>
         </View>
         <View style={styles.opC4}>
-            <Text>{numberWithCommas(getTotalWithDiscountAndCredit(props.invoice))}</Text>
+            <Text>{numberWithCommas(Math.round(getTotalWithDiscountAndCredit(props.invoice)*2)/2)}</Text>
         </View>
     </View>
 </>)

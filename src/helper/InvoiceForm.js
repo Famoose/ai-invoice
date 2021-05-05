@@ -141,7 +141,7 @@ function InvoiceForm(props) {
                                     <div className="grid grid-cols-12 gap-3">
                                         <label className="col-span-6">Bezeichnung</label>
                                         <label>Menge</label>
-                                        <label className="col-span-2">VP</label>
+                                        <label className="col-span-2">Preis</label>
                                         <label>Total</label>
                                         <label></label>
                                         <OrderPositionField orderPositions={values.orderPositions}
