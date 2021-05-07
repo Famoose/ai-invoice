@@ -78,7 +78,7 @@ class New extends React.Component {
     }
 
     validCreation = () => {
-        return !!this.state.invoice.offer.title && !!this.state.invoice.offer.offerNumber;
+        return !!this.state.invoice.offer.title && !!this.state.invoice.offer.offerNumber && !!this.state.folder;
     }
 
     render() {
