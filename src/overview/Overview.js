@@ -2,10 +2,6 @@ import Files from "./Files";
 import React from "react";
 
 class Overview extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="container mx-3 mx-auto">
