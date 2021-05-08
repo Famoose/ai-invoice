@@ -398,6 +398,12 @@ const Credit = (props) => (<View style={styles.opLine}>
     </View>
 )
 
+const isDefinedAndNotEmpty = (arg: string) => {
+    console.log(arg);
+    debugger;
+    return !!arg && arg.length > 0;
+}
+
 class InvoicePDF extends React.Component {
 
     render() {
@@ -424,8 +430,11 @@ class InvoicePDF extends React.Component {
                             <OrderPositionsTable ops={this.props.invoice.orderPositions}/>}
                             <View wrap={false}>
                                 <Total invoice={this.props.invoice}/>
-                                {this.props.invoice.discount && <Discount discount={this.props.invoice.discount}/>}
-                                {this.props.invoice.discount && <TotalWithDiscount invoice={this.props.invoice}/>}
+                                {isDefinedAndNotEmpty(this.props.invoice.discount) &&
+                                <Discount discount={this.props.invoice.discount}/>}
+                                {isDefinedAndNotEmpty(this.props.invoice.discount) &&
+                                <TotalWithDiscount invoice={this.props.invoice}/>
+                                }
                                 {this.props.invoice.credits && this.props.invoice.credits.length !== 0 &&
                                 <Credits credits={this.props.invoice.credits}/>}
                                 <TotalWithDiscountAndCredit invoice={this.props.invoice}/>

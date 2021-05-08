@@ -4,33 +4,49 @@ import {withRouter} from "react-router-dom";
 import ReactPaginate from 'react-paginate';
 import {Transition} from "@headlessui/react";
 import {RefreshIcon} from "@heroicons/react/solid";
+import SelectFolder from "./SelectFolder";
 
 class Files extends React.Component {
+    files;
 
     constructor(props) {
         super(props);
         this.state = {
             search: null,
-            files: null
+            filesFilter: null
         };
-        // read and filter only project files (json)
-        if (this.state.search) {
-            this.files = this.files.filter(file => file.toLowerCase().includes(this.search.search.toLowerCase()));
-        }
+        console.log("constructor");
     }
 
     componentDidMount() {
-        window.electron.on('onFilesFromFolder', (files) => {
-            this.setState({files: files.filter(file => file.includes('.json'))});
+        window.electron.invoke('getStoreValue', 'overview-folder').then((folder) => {
+            this.setState({folder: folder});
+            if (folder) {
+                window.electron.send('getFilesFromFolder', this.state.folder);
+            }
         });
-        window.electron.send('getFilesFromFolder', this.props.folder);
-    }
-    componentDidUpdate(nextProps: Readonly<P>, nextState: Readonly<S>, nextContext: any) {
-        window.electron.send('getFilesFromFolder', this.props.folder);
+
+        window.electron.on('onFilesFromFolder', (files) => {
+            console.log(files);
+            this.files = files.filter(file => file.includes('.json'))
+            this.setState({filesFilter: this.filterFiles(this.state.search, this.files)});
+        });
     }
 
     handleSearchChange = (event) => {
-        this.setState({search: event.target.value});
+        if (event.target.value) {
+            this.setState({
+                search: event.target.value,
+                filesFilter: this.filterFiles(event.target.value, this.files)
+            });
+        }
+    }
+
+    filterFiles = (search, files): String[] => {
+        if (search && files) {
+            return files.filter(file => file.toLowerCase().includes(search.toLowerCase()));
+        }
+        return files;
     }
 
     componentWillUnmount() {
@@ -41,19 +57,32 @@ class Files extends React.Component {
         this.props.history.push('/edit/' + file);
     }
 
+    setFolder = (folder) => {
+        window.electron.send('getFilesFromFolder', folder);
+        this.setState({folder: folder});
+    }
+
     render() {
         return (
-            <div>
-                <SearchIcon className="inline-block h-6 mr-2"/>
-                <input placeholder="Suchen"
-                       className="mb-2 px-3 py-2 rounded-md shadow-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                       onChange={this.handleSearchChange} type="text"/>
-                {!this.state.files && <RefreshIcon className="animate-spin h-6 m-auto"/>}
-                {!!this.state.files && <FileList files={this.state.files} handleOnClick={this.handleOnClick}/>}
-            </div>
+            <>
+                <div className="w-full flex justify-end">
+                    <SelectFolder folder={this.state.folder} setFolder={this.setFolder}/>
+                </div>
+                {this.state.folder &&
+                <div>
+                    <SearchIcon className="inline-block h-6 mr-2"/>
+                    <input placeholder="Suchen"
+                           className="mb-2 px-3 py-2 rounded-md shadow-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                           onChange={this.handleSearchChange} type="text"/>
+                    {!this.state.filesFilter && <RefreshIcon className="animate-spin h-6 m-auto"/>}
+                    {!!this.state.filesFilter &&
+                    <FileList files={this.state.filesFilter} handleOnClick={this.handleOnClick}/>}
+                </div>
+                }
+            </>
+
         )
-    }
-    ;
+    };
 }
 
 export default withRouter(Files);
