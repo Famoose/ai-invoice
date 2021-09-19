@@ -21,9 +21,9 @@ function InvoiceForm(props) {
                 return (
                     <Form className="space-y-4 mb-8">
                         <button
-                            className="fixed py-3 z-30 px-2 bottom-6 right-6 bg-blue-500  text-white rounded-md shadow-md"
+                            className="fixed py-3 z-30 px-2 bottom-6 right-6 bg-blue-500 active:bg-blue-700 text-white rounded-md shadow-md"
                             type="submit" disabled={isSubmitting}>
-                            Speichern
+                            Speichernd
                         </button>
 
                         <h2>Kopfzeile</h2>

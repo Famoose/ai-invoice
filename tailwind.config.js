@@ -7,7 +7,8 @@ module.exports = {
     variants: {
         extend: {
             padding: ['hover'],
-            scale: ['hover']
+            scale: ['hover'],
+            backgroundColor: ['active'],
         },
     },
     plugins: [],
