@@ -5,7 +5,7 @@ Simple invoice creation tool with pdf export, template, VAT and discount feature
 
 ## Download & Install
 Go to the newest release and download the installer for your System. Linux, MacOS and Windows are supported.
-On Windows auto update is supported.
+Windows also supports auto updates.
 
 ## Develop
 The application is done using Electron and React.
