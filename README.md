@@ -1,7 +1,7 @@
 # AI-Invoice
 Simple invoice creation tool with pdf export, template, VAT and discount features.
 
-![sample image](sample-image.png)
+![sample image](./sample-image.png)
 
 ## Download & Install
 Go to the newest release and download the installer for your System. Linux, MacOS and Windows are supported.
@@ -27,5 +27,5 @@ yarn run make
 Publish new version:
 ``` 
 npm verison minor | major
-git push
+git push --tag
 ```
