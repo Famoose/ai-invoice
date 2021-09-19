@@ -399,8 +399,6 @@ const Credit = (props) => (<View style={styles.opLine}>
 )
 
 const isDefinedAndNotEmpty = (arg: string) => {
-    console.log(arg);
-    debugger;
     return !!arg && arg.length > 0;
 }
 

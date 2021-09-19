@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate';
 import {Transition} from "@headlessui/react";
 import {RefreshIcon} from "@heroicons/react/solid";
 import SelectFolder from "./SelectFolder";
+import {DefaultFileExt} from "../constants";
 
 class Files extends React.Component {
     files;
@@ -28,7 +29,7 @@ class Files extends React.Component {
 
         window.electron.on('onFilesFromFolder', (files) => {
             console.log(files);
-            this.files = files.filter(file => file.includes('.json'))
+            this.files = files.filter(file => file.includes(DefaultFileExt))
             this.setState({filesFilter: this.filterFiles(this.state.search, this.files)});
         });
     }
@@ -111,7 +112,7 @@ export function FileList(props) {
     }
 
     return (
-        <div className="">
+        <div>
             <Transition
                 appear={true}
                 show={true}

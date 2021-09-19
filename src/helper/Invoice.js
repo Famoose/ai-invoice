@@ -1,4 +1,6 @@
 /* eslint-disable no-use-before-define */
+import {DefaultFileExt} from "../constants";
+
 class Invoice {
     header: Header;
     discount: number;
@@ -18,14 +20,14 @@ class Invoice {
     }
 
     static fromFile(path): Invoice {
-        if (path.includes('.json')) {
+        if (path.includes(DefaultFileExt)) {
             const data = window.electron.sendSync('readFile', path);
             return JSON.parse(data);
         }
     }
 
     static fromTemplateFile(path): Invoice {
-        if (path.includes('.json')) {
+        if (path.includes(DefaultFileExt)) {
             const data = window.electron.sendSync('readTemplateFile', path);
             return JSON.parse(data);
         }

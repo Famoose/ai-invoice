@@ -5,7 +5,7 @@ const Store = require('electron-store');
 const {app} = require('electron')
 
 const store = new Store();
-
+const DefaultFileExt = '.anto';
 
 ipcMain.on('getFilesFromFolder', (event, filePath) => {
     fs.readdir(filePath, (err, files) => {
@@ -59,7 +59,7 @@ ipcMain.on('readTemplateFile', (event, path) => {
 
 ipcMain.handle('createFile', (event, invoice) => {
     const folder = store.get('overview-folder');
-    const fileName = invoice.offer.title + '-' + invoice.offer.offerNumber + '.json';
+    const fileName = invoice.offer.title + '-' + invoice.offer.offerNumber + DefaultFileExt;
     if (folder) {
         fs.writeFileSync(folder + '/' + fileName, JSON.stringify(invoice), 'utf-8');
         return fileName;
@@ -67,7 +67,7 @@ ipcMain.handle('createFile', (event, invoice) => {
 });
 
 ipcMain.handle('createTemplateFile', (event, args) => {
-    const fileName = args.fileName + '.json';
+    const fileName = args.fileName + '.anto';
     ensureDirectoryExistence(templateFolder)
     fs.writeFileSync(templateFolder + '/' + fileName, JSON.stringify(args.invoice), 'utf-8');
     return fileName;
@@ -75,7 +75,7 @@ ipcMain.handle('createTemplateFile', (event, args) => {
 
 ipcMain.handle('saveFile', (event, args) => {
     const folder = store.get('overview-folder');
-    const fileName = args.invoice.offer.title + '-' + args.invoice.offer.offerNumber + '.json';
+    const fileName = args.invoice.offer.title + '-' + args.invoice.offer.offerNumber + DefaultFileExt;
     console.log(folder + '/' + args.oldFilename);
     if (fs.existsSync(folder + '/' + fileName) && fileName !== args.oldFilename) {
         dialog.showMessageBox({
@@ -95,7 +95,7 @@ ipcMain.handle('saveFile', (event, args) => {
 });
 
 ipcMain.handle('saveTemplateFile', (event, args) => {
-    const fileName = args.fileName + '.json';
+    const fileName = args.fileName + DefaultFileExt;
     if (templateFolder) {
         if (args.fileName !== args.oldFilename && fs.existsSync(templateFolder + '/' + args.oldFilename)) {
             fs.unlinkSync(templateFolder + '/' + args.oldFilename);
