@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
-        fontSize: 12,
+        fontSize: 10,
         maxHeight: 60
     },
 
@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     },
 
     headerMwst: {
-        fontWeight: 'medium',
         marginBottom: 4
     },
 
@@ -63,11 +62,11 @@ const styles = StyleSheet.create({
         marginBottom: 80,
         marginRight: 150,
         marginLeft: 'auto',
-        fontSize: 14,
+        fontSize: 11,
     },
 
     pageNumber: {
-        fontSize: 12,
+        fontSize: 10,
         textAlign: 'center',
         color: 'grey',
     },
@@ -81,7 +80,8 @@ const styles = StyleSheet.create({
     },
 
     offerTitle: {
-        fontSize: 18,
+        fontSize: 15,
+        maxWidth: '70%',
     },
 
     offerDescription: {
@@ -93,14 +93,14 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginLeft: 40,
         marginRight: 40,
-        fontSize: 12,
+        fontSize: 10,
         fontWeight: 'thin'
     },
 
     orderPositions: {
         marginLeft: 40,
         marginRight: 40,
-        fontSize: 12,
+        fontSize: 10,
         fontWeight: 'thin'
     },
 
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     },
 
     creditTitle: {
-        fontSize: 13,
+        fontSize: 10,
         fontWeight: 'thin'
     },
 
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         flexDirection: 'row',
         alignItems: 'baseline',
-        fontSize: 12,
+        fontSize: 10,
     },
 
     totalWithDiscountLine: {
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         flexDirection: 'row',
         alignItems: 'baseline',
-        fontSize: 12,
+        fontSize: 10,
     },
 
     totalWithDiscountAndCreditLine: {
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         flexDirection: 'row',
         alignItems: 'baseline',
-        fontSize: 13,
+        fontSize: 10,
         borderBottom: 2
     },
 
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginLeft: 40,
         marginRight: 40,
-        fontSize: 12,
+        fontSize: 10,
     },
 
     orderCommentElement: {
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
 });
 
 const Address = (props) => (<>
-        <Text>{props.address.intro} {props.name1}</Text>
+        <Text>{props.address.intro} {props.address.name1}</Text>
         <Text>{props.address.address1}</Text>
         <Text>{props.address.plz} {props.address.place}</Text>
     </>
@@ -230,6 +230,10 @@ const Date = (props) => (
     </View>
 )
 
+const isDefined = (prop) => {
+    return !(prop === null || prop === undefined || prop === '')
+}
+
 const Offer = (props) => (<>
         <View style={styles.offer}>
             <View>
@@ -239,7 +243,7 @@ const Offer = (props) => (<>
             <View style={styles.offerDescription}>
                 <Date title="Bestelldatum" date={props.offer.orderDate}/>
                 <Date title="Rechnungsdatum" date={props.offer.invoicingDate}/>
-                {props.offer.phone && <Text>Telefon: {props.offer.phone}</Text>}
+                {isDefined(props.offer.phone) && <Text>Telefon: {props.offer.phone}</Text>}
             </View>
         </View>
         <View style={styles.offerComment}>
@@ -302,10 +306,10 @@ const OrderPosition = (props) => (<View style={styles.opLine}>
 
 const OrderComment = (props) => (<>
         <View style={styles.orderComment}>
-            {props.invoice.condition && <Text style={styles.orderCommentElement}>
+            {isDefined(props.invoice.condition) && <Text style={styles.orderCommentElement}>
                 Konditionen: {props.invoice.condition}
             </Text>}
-            {props.invoice.comment && (<>
+            {isDefined(props.invoice.comment) && (<>
                 <Text style={styles.creditTitle}>Bemerkung</Text>
                 <Text style={styles.orderCommentElement}>
                     {props.invoice.comment}
@@ -399,7 +403,7 @@ const Credit = (props) => (<View style={styles.opLine}>
 )
 
 const isDefinedAndNotEmpty = (arg: string) => {
-    return !!arg && arg.length > 0;
+    return isDefined(arg) && arg.length > 0;
 }
 
 class InvoicePDF extends React.Component {
@@ -409,22 +413,22 @@ class InvoicePDF extends React.Component {
             <Document title={this.props.invoice.offer.title + '-' + this.props.invoice.offer.offerNumber}>
                 <Page size="A4" style={styles.page} wrap>
                     <View style={styles.header} fixed>
-                        {this.props.invoice.header && <Header header={this.props.invoice.header}/>}
+                        {isDefined(this.props.invoice.header) && <Header header={this.props.invoice.header}/>}
                     </View>
 
                     <View style={styles.content}>
                         <View style={styles.address}>
-                            {this.props.invoice.address &&
+                            {isDefined(this.props.invoice.address) &&
                             <Address address={this.props.invoice.address}/>}
                         </View>
 
                         <View>
-                            {this.props.invoice.offer &&
+                            {isDefined(this.props.invoice.offer) &&
                             <Offer offer={this.props.invoice.offer}/>}
                         </View>
 
                         <View>
-                            {this.props.invoice.orderPositions && this.props.invoice.orderPositions.length !== 0 &&
+                            {isDefinedAndNotEmpty(this.props.invoice.orderPositions) &&
                             <OrderPositionsTable ops={this.props.invoice.orderPositions}/>}
                             <View wrap={false}>
                                 <Total invoice={this.props.invoice}/>
@@ -433,7 +437,7 @@ class InvoicePDF extends React.Component {
                                 {isDefinedAndNotEmpty(this.props.invoice.discount) &&
                                 <TotalWithDiscount invoice={this.props.invoice}/>
                                 }
-                                {this.props.invoice.credits && this.props.invoice.credits.length !== 0 &&
+                                {isDefinedAndNotEmpty(this.props.invoice.credits) &&
                                 <Credits credits={this.props.invoice.credits}/>}
                                 <TotalWithDiscountAndCredit invoice={this.props.invoice}/>
                             </View>

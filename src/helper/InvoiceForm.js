@@ -319,28 +319,41 @@ function CreditField(props){
     </>);
 }
 
-export function getTotal(values) {
-    return values.orderPositions.reduce((p, c) => {
-        return !!c.total || c.total === 0 ? parseFloat(c.total) + p : p;
-    }, 0).toFixed(2);
+export function swissFormat(amount) {
+    const factor = 0.05;
+    amount = parseFloat(amount);
+    return (Math.round(amount / factor) * factor).toFixed(2);
 }
 
-export function getTotalWithDiscount(values) {
-    let total = getTotal(values);
-    if (values.discount) {
+export function calcTotal(values) {
+    return values.orderPositions.reduce((p, c) => {
+        return !!c.total || c.total === 0 ? parseFloat(c.total) + p : p;
+    }, 0);
+}
+
+export function getTotal(values) {
+    return swissFormat(calcTotal(values));
+}
+
+export function calcTotalWithDiscount(values) {
+    let total = calcTotal(values);
+    if (!!values.discount) {
         total = total * (1 - (values.discount / 100));
     }
     return total;
 }
 
+export function getTotalWithDiscount(values) {
+    return swissFormat(calcTotalWithDiscount(values));
+}
+
 export function getTotalWithDiscountAndCredit(values) {
-    let total = getTotalWithDiscount(values);
+    const total = calcTotalWithDiscount(values);
 
     const credit = values.credits.reduce((p, c) => {
         const amount = parseFloat(c.amount);
         return !!amount || amount === 0 ? amount + p : p;
-    }, 0);
-
-    total = total + credit;
-    return parseFloat(total).toFixed(2);
+    }, 0)
+    const totalWithCredit = total + credit;
+    return swissFormat(totalWithCredit);
 }
