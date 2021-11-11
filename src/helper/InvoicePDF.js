@@ -10,6 +10,12 @@ import robotoMedium from "@fontsource/roboto/files/roboto-all-700-normal.woff";
 import robotoLight from "@fontsource/roboto/files/roboto-all-300-normal.woff";
 import robotoThin from "@fontsource/roboto/files/roboto-all-100-normal.woff";
 
+import robotoSlabRegular from "@fontsource/roboto-slab/files/roboto-slab-all-500-normal.woff";
+import robotoSlabBold from "@fontsource/roboto-slab/files/roboto-slab-all-900-normal.woff";
+import robotoSlabMedium from "@fontsource/roboto-slab/files/roboto-slab-all-700-normal.woff";
+import robotoSlabLight from "@fontsource/roboto-slab/files/roboto-slab-all-300-normal.woff";
+import robotoSlabThin from "@fontsource/roboto-slab/files/roboto-slab-all-100-normal.woff";
+
 Font.register({
     family: 'Roboto', fonts: [
         {src: robotoRegular},
@@ -20,9 +26,20 @@ Font.register({
     ]
 });
 
+Font.register({
+    family: 'RobotoSlab', fonts: [
+        {src: robotoSlabRegular},
+        {src: robotoSlabBold, fontWeight: 'bold'},
+        {src: robotoSlabMedium, fontWeight: 'medium'},
+        {src: robotoSlabThin, fontWeight: 'thin'},
+        {src: robotoSlabLight, fontWeight: 'light'},
+    ]
+});
+
 const styles = StyleSheet.create({
 
     header: {
+        fontFamily: 'RobotoSlab',
         marginLeft: 40,
         marginRight: 40,
         marginTop: 40,
