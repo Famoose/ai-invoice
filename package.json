@@ -10,8 +10,6 @@
   "repository": "Famoose/ai-invoice",
   "dependencies": {
     "@craco/craco": "^6.4.0",
-    "@fontsource/roboto": "^4.5.1",
-    "@fontsource/roboto-slab": "^4.5.1",
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
     "@react-pdf/renderer": "^2.0.21",

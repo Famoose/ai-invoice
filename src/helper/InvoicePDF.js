@@ -4,17 +4,17 @@ import {Font} from '@react-pdf/renderer'
 import moment from "moment";
 import {getTotal, getTotalWithDiscount, getTotalWithDiscountAndCredit} from "./InvoiceForm";
 
-import robotoRegular from "@fontsource/roboto/files/roboto-all-500-normal.woff";
-import robotoBold from "@fontsource/roboto/files/roboto-all-900-normal.woff";
-import robotoMedium from "@fontsource/roboto/files/roboto-all-700-normal.woff";
-import robotoLight from "@fontsource/roboto/files/roboto-all-300-normal.woff";
-import robotoThin from "@fontsource/roboto/files/roboto-all-100-normal.woff";
+import robotoRegular from "../resources/roboto/files/roboto-all-500-normal.woff";
+import robotoBold from "../resources/roboto/files/roboto-all-900-normal.woff";
+import robotoMedium from "../resources/roboto/files/roboto-all-700-normal.woff";
+import robotoLight from "../resources/roboto/files/roboto-all-300-normal.woff";
+import robotoThin from "../resources/roboto/files/roboto-all-100-normal.woff";
 
-import robotoSlabRegular from "@fontsource/roboto-slab/files/roboto-slab-all-500-normal.woff";
-import robotoSlabBold from "@fontsource/roboto-slab/files/roboto-slab-all-900-normal.woff";
-import robotoSlabMedium from "@fontsource/roboto-slab/files/roboto-slab-all-700-normal.woff";
-import robotoSlabLight from "@fontsource/roboto-slab/files/roboto-slab-all-300-normal.woff";
-import robotoSlabThin from "@fontsource/roboto-slab/files/roboto-slab-all-100-normal.woff";
+import robotoSlabRegular from "../resources/roboto-slab/files/roboto-slab-all-500-normal.woff";
+import robotoSlabBold from "../resources/roboto-slab/files/roboto-slab-all-900-normal.woff";
+import robotoSlabMedium from "../resources/roboto-slab/files/roboto-slab-all-700-normal.woff";
+import robotoSlabLight from "../resources/roboto-slab/files/roboto-slab-all-300-normal.woff";
+import robotoSlabThin from "../resources/roboto-slab/files/roboto-slab-all-100-normal.woff";
 
 Font.register({
     family: 'Roboto', fonts: [
