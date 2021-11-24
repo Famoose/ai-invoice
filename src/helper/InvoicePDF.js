@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'baseline',
         fontSize: 10,
-        borderBottom: 2
+        borderBottom: 1
     },
 
     orderComment: {

@@ -144,7 +144,7 @@ function InvoiceForm(props) {
                                 <div className="flex flex-col space-y-3">
                                     <div className="divide-y-2 space-y-3">
                                         <div className="grid grid-cols-12 gap-3">
-                                            <label className="col-span-6">Bezeichnung</label>
+                                            <label className="col-span-7">Bezeichnung</label>
                                             <label>Menge</label>
                                             <label className="col-span-2">Preis</label>
                                             <label>Total</label>
